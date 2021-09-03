@@ -114,3 +114,67 @@ function Bird(alturaDoJogo){
 //     barreiras.animar()
 //     bird.animar()
 // }, 20)
+
+function Progresso(){
+    this.elemento = novoElemento('span', 'progresso')
+    this.atualizarPontos = pontos => {
+        this.elemento.innerHTML = pontos
+    }
+    this.atualizarPontos(0)
+}
+
+function estaoSobrePostos(elementoA, elementoB){
+    const a = elementoA.getBoundingClientRect()
+    const b = elementoB.getBoundingClientRect()
+
+    const horizontal = a.left + a.width >= b.left && b.left + b.width >= a.left
+    const vertical = a.top + a.height >= b.top && b.top + b.height >= a.top
+
+    return horizontal && vertical
+
+}
+
+function colidiu(bird, barreiras){
+    let colidiu = false
+    barreiras.pares.forEach(parDeBarriras => {
+        if (!colidiu) {
+            const superior = parDeBarriras.superior.elemento
+            const inferior = parDeBarriras.inferior.elemento
+
+            colidiu = estaoSobrePostos(bird.elemento, superior) 
+                || estaoSobrePostos(bird.elemento, inferior)
+
+        }
+    })
+    return colidiu
+}
+
+function FlappyBird(){
+    let pontos = 0
+
+    const areaDoJogo = document.querySelector('[wm-flappy]')
+    const altura = areaDoJogo.clientHeight
+    const largura = areaDoJogo.clientWidth
+
+    const progresso = new Progresso()
+    const barreiras = new Barreiras(altura, largura, 200, 400, 
+        () => progresso.atualizarPontos(++pontos))
+    const bird = new Bird(altura)
+
+    areaDoJogo.appendChild(progresso.elemento)
+    areaDoJogo.appendChild(bird.elemento)
+    barreiras.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
+
+    this.start = () => {
+        const temporizador = setInterval(() => {
+            barreiras.animar()
+            bird.animar()
+
+            if (colidiu(bird , barreiras)){
+                clearInterval(temporizador)
+            }
+        }, 20)
+    }
+}
+
+new FlappyBird().start()
