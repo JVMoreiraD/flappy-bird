@@ -80,7 +80,7 @@ function Bird(alturaDoJogo){
     let voando = false
 
     this.elemento = novoElemento('img', 'bird')
-    this.elemento.src =  '../src/assets/images/passaro.png' 
+    this.elemento.src =  '../src/assets/images/Passaro.png' 
 
     this.getY = () => parseInt(this.elemento.style.bottom.split('px')[0])
     this.setY = y => this.elemento.style.bottom = `${y}px`
