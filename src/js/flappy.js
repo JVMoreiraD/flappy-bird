@@ -80,8 +80,7 @@ function Bird(alturaDoJogo){
     let voando = false
 
     this.elemento = novoElemento('img', 'bird')
-    this.elemento.src =  'https://github.com/JVMoreiraD/flappy-bird/blob/master/src/assets/images/passaro.png' 
-
+    this.elemento.src =  'https://raw.githubusercontent.com/JVMoreiraD/flappy-bird/master/src/assets/images/passaro.png'
     this.getY = () => parseInt(this.elemento.style.bottom.split('px')[0])
     this.setY = y => this.elemento.style.bottom = `${y}px`
 
